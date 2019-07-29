@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Example/BluetoothLETest/BLETestScene.unity
-    guid: af53dd222ea724d689cd55c23165b0fb
+    path: Assets/Scenes/Test.unity
+    guid: 5c6ab5d3f25ed824a8f81cc793d6b24f
   m_configObjects: {}
