@@ -9,22 +9,24 @@ public class Leg : MonoBehaviour
     private ConfigurableJoint innerJoint, outerJoint;
 
     [SerializeField]
-    public float rotationSpeedX = 20F;
-    public float rotationSpeedY = 10;
-    public float rotationSpeedZ = 20F;
+    public float speed = 200;
 
+    // Input keys for moving the leg parts
+    // These are initialized in the editor
+    public KeyCode KEY_IN_UP;
+    public KeyCode KEY_IN_DOWN;
+    public KeyCode KEY_IN_LEFT;
+    public KeyCode KEY_IN_RIGHT;
 
-    public bool oUp, oDown,
-                iUp, iDown,
-                iLeft, iRight;
-
+    public KeyCode KEY_OUT_UP;
+    public KeyCode KEY_OUT_DOWN;
 
     // Start is called before the first frame update
     void Start()
     {
         body = transform;
-        innerLeg = transform.Find("A");
-        outerLeg = transform.Find("C");
+        innerLeg = transform.Find("X");
+        outerLeg = transform.Find("Y");
 
         innerJoint = innerLeg.GetComponent<ConfigurableJoint>();
         outerJoint = outerLeg.GetComponent<ConfigurableJoint>();
@@ -32,86 +34,31 @@ public class Leg : MonoBehaviour
         body = innerJoint.connectedBody.transform;
     }
 
-    #region Movement Button Toggles
-    public void InnerUp()
-    {
-        iDown = false;
-        iUp = true;
-    }
-
-    public void InnerDown()
-    {
-        iDown = true;
-        iUp = false;
-    }
-
-    public void InnerLeft()
-    {
-        iRight = false;
-        iLeft = true;
-    }
-
-    public void InnerRight()
-    {
-        iRight = true;
-        iLeft = false;
-    }
-
-    public void OuterUp()
-    {
-        oDown = false;
-        oUp = true;
-    }
-
-    public void OuterDown()
-    {
-        oDown = true;
-        oUp = false;
-    }
-
-    public void InnerStop()
-    {
-        iDown = iUp = iLeft = iRight = false;
-    }
-
-    public void OuterStop()
-    {
-        oDown = oUp = false;
-    }
-    #endregion
-
     // Update is called once per frame
     void Update()
     {
-        oUp = Input.GetKey(KeyCode.UpArrow);
-        oDown = Input.GetKey(KeyCode.DownArrow);
-
-        iLeft = Input.GetKey(KeyCode.LeftArrow);
-        iRight = Input.GetKey(KeyCode.RightArrow);
-
-
-        if (oUp)
-        {
-            outerJoint.transform.Rotate(Vector3.forward * rotationSpeedY);
+        // Up and down (Inner part)
+        if (Input.GetKey(KEY_IN_UP)) {
+            innerJoint.transform.Rotate(Vector3.forward * speed * Time.deltaTime);
         }
-        else if (oDown)
-        {
-            outerJoint.transform.Rotate(Vector3.back * rotationSpeedY);
+        else if (Input.GetKey(KEY_IN_DOWN)) {
+            innerJoint.transform.Rotate(Vector3.back * speed * Time.deltaTime);
         }
 
-        if (iUp)
-        {
-            innerJoint.transform.Rotate(Vector3.forward * rotationSpeedX);
+        // Left and right (Inner part)
+        if (Input.GetKey(KEY_IN_LEFT)) {
+            innerJoint.transform.Rotate(Vector3.left * speed * Time.deltaTime);
         }
-        else if (iDown)
-        {
-            innerJoint.transform.Rotate(Vector3.back * rotationSpeedX);
+        else if (Input.GetKey(KEY_IN_RIGHT)) {
+            innerJoint.transform.Rotate(Vector3.right * speed * Time.deltaTime);
         }
 
-        if (iLeft)
-            innerJoint.transform.Rotate(Vector3.left * rotationSpeedZ);
-        else if (iRight)
-            innerJoint.transform.Rotate(Vector3.right * rotationSpeedZ);
-
+        // Up and down (Outer part)
+        if (Input.GetKey(KEY_OUT_UP)) {
+            outerJoint.transform.Rotate(Vector3.forward * speed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KEY_OUT_DOWN)) {
+            outerJoint.transform.Rotate(Vector3.back * speed * Time.deltaTime);
+        }
     }
 }
